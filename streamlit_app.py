@@ -12,14 +12,6 @@ def predict_psy_health(data):
     prediction = model.predict(data)
     return prediction
 
-# Initialize the DataFrame in session state if not already done
-if 'df' not in st.session_state:
-    st.session_state.df = pd.DataFrame(columns=[
-        'Gender', 'Occupation', 'self_employed', 'family_history', 'treatment', 'Days_Indoors',
-        'Growing_Stress', 'Changes_Habits', 'Mental_Health_History', 'Mood_Swings',
-        'Coping_Struggles', 'Work_Interest', 'Social_Weakness', 'mental_health_interview', 'care_options'
-    ])
-
 # Add page title and description
 st.title('🧠 Mental Health Prediction App')
 st.write("""
@@ -27,7 +19,7 @@ st.write("""
 This tool helps in assessing potential mental health risks based on several lifestyle and historical factors.
 """)
 
-# Collect user inputs with more intuitive descriptions
+# Collect user inputs
 st.markdown("### Please fill in the following details:")
 
 gender = st.radio('👤 What is your gender?', ['Male', 'Female'])
@@ -46,53 +38,50 @@ social_weakness = st.selectbox('🤝 Do you feel socially weak or disconnected?'
 mental_health_interview = st.selectbox('🗣️ Have you had a mental health interview?', ['Yes', 'No', 'Maybe'])
 care_options = st.selectbox('💼 Do you have access to mental health care options?', ['Yes', 'No', 'Maybe'])
 
-# Add data to DataFrame stored in session state
-if st.button('Add Data'):
-    new_data = {
-        'Gender': gender,
-        'Occupation': occupation,
-        'self_employed': self_employed,
-        'family_history': family_history,
-        'treatment': treatment,
-        'Days_Indoors': days_indoors,
-        'Growing_Stress': growing_stress,
-        'Changes_Habits': changes_habits,
-        'Mental_Health_History': mental_health_history,
-        'Mood_Swings': mood_swings,
-        'Coping_Struggles': coping_struggles,
-        'Work_Interest': work_interest,
-        'Social_Weakness': social_weakness,
-        'mental_health_interview': mental_health_interview,
-        'care_options': care_options
-    }
+# Prepare data for prediction
+input_data = {
+    'Gender': gender,
+    'Occupation': occupation,
+    'self_employed': self_employed,
+    'family_history': family_history,
+    'treatment': treatment,
+    'Days_Indoors': days_indoors,
+    'Growing_Stress': growing_stress,
+    'Changes_Habits': changes_habits,
+    'Mental_Health_History': mental_health_history,
+    'Mood_Swings': mood_swings,
+    'Coping_Struggles': coping_struggles,
+    'Work_Interest': work_interest,
+    'Social_Weakness': social_weakness,
+    'mental_health_interview': mental_health_interview,
+    'care_options': care_options
+}
+
+# Function to preprocess input data
+def preprocess_input(data):
+    df = pd.DataFrame([data])
     
-    # Append the new data to the DataFrame in session state
-    st.session_state.df = st.session_state.df.append(new_data, ignore_index=True)
-    st.success("✅ Data has been added!")
+    # One-hot encoding for categorical variables
+    dummies_columns = ['Days_Indoors', 'Gender', 'Occupation', 'Growing_Stress', 
+                       'Changes_Habits', 'Mental_Health_History', 'Mood_Swings', 
+                       'Work_Interest', 'Social_Weakness', 'mental_health_interview', 'care_options']
+    
+    df_dummies = pd.get_dummies(df[dummies_columns])
+    df = df.drop(columns=dummies_columns)
+    df = pd.concat([df, df_dummies], axis=1)
 
-# Display the current data from session state
-st.write("### Current Data:")
-st.dataframe(st.session_state.df)
+    # Convert yes/no to binary
+    columns_to_replace = ['self_employed', 'family_history', 'treatment', 'Coping_Struggles']
+    df[columns_to_replace] = df[columns_to_replace].replace({'Yes': 1, 'No': 0})
+    df['Coping_Struggles'] = df['Coping_Struggles'].replace({'Low': 0, 'Medium': 1, 'High': 2})
 
-# Data preprocessing (one-hot encoding and numerical conversion)
-dummies_columns = ['Days_Indoors', 'Gender', 'Occupation', 'Growing_Stress', 
-                   'Changes_Habits', 'Mental_Health_History', 'Mood_Swings', 
-                   'Work_Interest', 'Social_Weakness', 'mental_health_interview', 'care_options']
-df_dummies = pd.get_dummies(st.session_state.df[dummies_columns])
-
-df = st.session_state.df.drop(columns=dummies_columns)
-df = pd.concat([df, df_dummies], axis=1)
-
-# Replace categorical values with numerical for certain columns
-columns_to_replace = ['self_employed', 'family_history', 'treatment', 'Coping_Struggles']
-df[columns_to_replace] = df[columns_to_replace].replace({'Yes': 1, 'No': 0})
-df['Coping_Struggles'] = df['Coping_Struggles'].replace({'Low': 0, 'Medium': 1, 'High': 2})
-df[columns_to_replace] = df[columns_to_replace].astype(int)
+    return df.values
 
 # Prediction button with feedback
-if st.button('Predict'):
-    prediction = predict_psy_health(df.iloc[-1].values)
-    
+if st.button('🔍 Predict'):
+    preprocessed_data = preprocess_input(input_data)
+    prediction = predict_psy_health(preprocessed_data)
+
     if prediction[0] > 0.5:
         st.error('🚨 Warning! There is a possible risk of mental illness.')
     else:
