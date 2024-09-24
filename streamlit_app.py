@@ -8,7 +8,7 @@ model = load_model('NN_via_carpatia.h5')
 
 # Function to make predictions
 def predict_psy_health(data):
-    data = np.array(data).reshape(1, -1)
+    data = np.array(data).reshape(1, -1)  # Reshape for a single prediction
     prediction = model.predict(data)
     return prediction
 
@@ -75,20 +75,29 @@ def preprocess_input(data):
     df[columns_to_replace] = df[columns_to_replace].replace({'Yes': 1, 'No': 0})
     df['Coping_Struggles'] = df['Coping_Struggles'].replace({'Low': 0, 'Medium': 1, 'High': 2})
 
+    # Ensure the input has the correct shape for the model
+    expected_shape = model.input_shape[1]  # Get the expected input shape (excluding the batch size)
+    if df.shape[1] != expected_shape:
+        st.error(f"Input shape mismatch: expected {expected_shape}, got {df.shape[1]}. Please check your inputs.")
+        return None
+
     return df.values
 
 # Prediction button with feedback
 if st.button('🔍 Predict'):
     preprocessed_data = preprocess_input(input_data)
-    prediction = predict_psy_health(preprocessed_data)
+    
+    if preprocessed_data is not None:  # Check if preprocessing was successful
+        prediction = predict_psy_health(preprocessed_data)
 
-    if prediction[0] > 0.5:
-        st.error('🚨 Warning! There is a possible risk of mental illness.')
-    else:
-        st.success('🎉 No risk of mental illness detected.')
+        if prediction[0][0] > 0.5:  # Assuming binary classification, adjust if needed
+            st.error('🚨 Warning! There is a possible risk of mental illness.')
+        else:
+            st.success('🎉 No risk of mental illness detected.')
 
 # Footer
 st.markdown("""
 ---
 **Disclaimer:** This app provides a preliminary mental health risk assessment. For professional advice, consult a healthcare provider.
 """)
+
