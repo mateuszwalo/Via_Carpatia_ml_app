@@ -92,7 +92,9 @@ def preprocess_input(data):
     # Upewnienie się, że kolumny są w odpowiedniej kolejności
     df = df[expected_columns]
 
-    return df.values
+    # Konwersja danych na float32, aby były kompatybilne z modelem TensorFlow
+    return df.values.astype(np.float32)
+
 
     
 # Obsługa przycisku Predict
