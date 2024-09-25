@@ -88,10 +88,10 @@ if st.button('Predict'):
             else:
                 st.info('No risk of mental illness detected.')
         except ValueError as e:
+            
             st.error(f"Error during prediction: {e}")
-
-
-
+            
+            
     st.info(
         """
         **Author:** *Mateusz Walo*  
