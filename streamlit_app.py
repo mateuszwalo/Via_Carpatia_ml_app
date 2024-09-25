@@ -3,38 +3,39 @@ import pandas as pd
 import numpy as np
 from tensorflow.keras.models import load_model
 
-
+# Ładujemy model
 model = load_model('NN_via_carpatia.h5')
 
-
+# Funkcja do predykcji
 def predict_psy_health(data):
-    data = np.array(data).reshape(1, -1)  
+    data = np.array(data).reshape(1, -1)
     prediction = model.predict(data)
     return prediction
 
-st.title(' Mental Health Prediction App')
+st.title('Mental Health Prediction App')
 st.write("""
 #### Enter your information below to get a personalized prediction about your mental health status.
 This tool helps in assessing potential mental health risks based on several lifestyle and historical factors.
 """)
 
-
-gender = st.selectbox(' What is your gender?', ['Male', 'Female'])
+# Wybór opcji w formularzu
+gender = st.selectbox('What is your gender?', ['Male', 'Female'])
 occupation = st.selectbox('What is your occupation?', ['Student', 'Business', 'Housewife', 'Others', 'Corporate'])
 self_employed = st.selectbox('Are you self-employed?', ['Yes', 'No'])
 family_history = st.selectbox('Do you have a family history of mental illness?', ['Yes', 'No'])
 treatment = st.selectbox('Are you currently receiving mental health treatment?', ['Yes', 'No'])
-days_indoors = st.selectbox('How often do you stay indoors?', ['1-14 days', '15-30 days', '31-60 days', 'Go out Every day','More than 2 months'])
+days_indoors = st.selectbox('How often do you stay indoors?', ['1-14 days', '15-30 days', '31-60 days', 'Go out Every day', 'More than 2 months'])
 growing_stress = st.selectbox('Are your stress levels increasing?', ['Yes', 'No', 'Maybe'])
-changes_habits = st.selectbox('Have you noticed changes in your habits?', ['Yes', 'No','Maybe'])
+changes_habits = st.selectbox('Have you noticed changes in your habits?', ['Yes', 'No', 'Maybe'])
 mental_health_history = st.selectbox('Do you have a history of mental health issues?', ['Yes', 'No', 'Maybe'])
-mood_swings = st.selectbox('Do you experience mood swings?', ['High', 'Low','Medium'])
-coping_struggles = st.selectbox('How well do you cope with daily challenges?', ['Yes','No'])
+mood_swings = st.selectbox('Do you experience mood swings?', ['High', 'Low', 'Medium'])
+coping_struggles = st.selectbox('How well do you cope with daily challenges?', ['Yes', 'No'])
 work_interest = st.selectbox('How interested are you in your work?', ['Yes', 'No', 'Maybe'])
-social_weakness = st.selectbox('Do you feel socially weak or disconnected?', ['Yes', 'No','Maybe'])
+social_weakness = st.selectbox('Do you feel socially weak or disconnected?', ['Yes', 'No', 'Maybe'])
 mental_health_interview = st.selectbox('Have you had a mental health interview?', ['Yes', 'No', 'Maybe'])
 care_options = st.selectbox('Do you have access to mental health care options?', ['Yes', 'No', 'Not sure'])
 
+# Dane wejściowe
 input_data = {
     'Gender': gender,
     'Occupation': occupation,
@@ -53,31 +54,59 @@ input_data = {
     'care_options': care_options
 }
 
+# Funkcja do przetwarzania danych
 def preprocess_input(data):
     df2 = pd.DataFrame([data])
-    dummies_columns = ['Days_Indoors', 'Gender', 'Occupation', 'Growing_Stress', 
-                   'Changes_Habits', 'Mental_Health_History', 'Mood_Swings', 
-                   'Work_Interest', 'Social_Weakness', 'mental_health_interview','care_options']
     
+    # Kolumny, które wymagają get_dummies
+    dummies_columns = ['Days_Indoors', 'Gender', 'Occupation', 'Growing_Stress', 
+                       'Changes_Habits', 'Mental_Health_History', 'Mood_Swings', 
+                       'Work_Interest', 'Social_Weakness', 'mental_health_interview', 'care_options']
+    
+    # Zastosowanie get_dummies
     df_dummies = pd.get_dummies(df2[dummies_columns])
+    
+    # Upewnij się, że wszystkie kolumny są obecne (nawet jeśli niektóre wartości nie występują w danych wejściowych)
+    all_columns = ['self_employed', 'family_history', 'treatment', 'Coping_Struggles',
+       'Days_Indoors_1-14 days', 'Days_Indoors_15-30 days',
+       'Days_Indoors_31-60 days', 'Days_Indoors_Go out Every day',
+       'Days_Indoors_More than 2 months', 'Gender_Female', 'Gender_Male',
+       'Occupation_Business', 'Occupation_Corporate', 'Occupation_Housewife',
+       'Occupation_Others', 'Occupation_Student', 'Growing_Stress_Maybe',
+       'Growing_Stress_No', 'Growing_Stress_Yes', 'Changes_Habits_Maybe',
+       'Changes_Habits_No', 'Changes_Habits_Yes',
+       'Mental_Health_History_Maybe', 'Mental_Health_History_No',
+       'Mental_Health_History_Yes', 'Mood_Swings_High', 'Mood_Swings_Low',
+       'Mood_Swings_Medium', 'Work_Interest_Maybe', 'Work_Interest_No',
+       'Work_Interest_Yes', 'Social_Weakness_Maybe', 'Social_Weakness_No',
+       'Social_Weakness_Yes', 'mental_health_interview_Maybe',
+       'mental_health_interview_No', 'mental_health_interview_Yes',
+       'care_options_No', 'care_options_Not sure', 'care_options_Yes']  # lista wszystkich kolumn, na których model był trenowany
+    for col in all_columns:
+        if col not in df_dummies.columns:
+            df_dummies[col] = 0  # Dodaj brakującą kolumnę z zerami
+    
+    # Usunięcie oryginalnych kolumn
     df2 = df2.drop(columns=dummies_columns)
+    
+    # Łączenie danych po kodowaniu
     df_usa = pd.concat([df2, df_dummies], axis=1)
-    columns_to_convert = df_usa.select_dtypes(include=['bool']).columns
-    df_usa[columns_to_convert] = df_usa[columns_to_convert].apply(lambda x: x.astype(int))
+    
+    # Konwersja wartości binarnych
     columns_to_replace = ['self_employed', 'family_history', 'treatment', 'Coping_Struggles']
     df_usa[columns_to_replace] = df_usa[columns_to_replace].replace({'Yes': 1, 'No': 0})
     df_usa[columns_to_replace] = df_usa[columns_to_replace].astype(int)
     
     return df_usa.values
 
+# Obsługa przycisku Predict
 if st.button('Predict'):
     preprocessed_data = preprocess_input(input_data)
     
-    if preprocessed_data is not None:  
+    if preprocessed_data is not None:
         prediction = predict_psy_health(preprocessed_data)
 
-        if prediction[0][0] > 0.5: 
+        if prediction[0][0] > 0.5:
             st.error('Warning! There is a possible risk of mental illness.')
         else:
             st.success('No risk of mental illness detected.')
-
