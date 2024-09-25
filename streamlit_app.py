@@ -3,21 +3,16 @@ import pandas as pd
 import numpy as np
 from tensorflow.keras.models import load_model
 
-# Ładujemy model
 model = load_model('NN_via_carpatia.h5')
 
-# Funkcja do predykcji
+
 def predict_psy_health(data):
     prediction = model.predict(data)
     return prediction
 
 st.title('Mental Health Prediction App')
-st.write("""
-#### Enter your information below to get a personalized prediction about your mental health status.
-This tool helps in assessing potential mental health risks based on several lifestyle and historical factors.
-""")
 
-# Wybór opcji w formularzu
+
 gender = st.selectbox('What is your gender?', ['Male', 'Female'])
 occupation = st.selectbox('What is your occupation?', ['Student', 'Business', 'Housewife', 'Others', 'Corporate'])
 self_employed = st.selectbox('Are you self-employed?', ['Yes', 'No'])
@@ -34,7 +29,6 @@ social_weakness = st.selectbox('Do you feel socially weak or disconnected?', ['Y
 mental_health_interview = st.selectbox('Have you had a mental health interview?', ['Yes', 'No', 'Maybe'])
 care_options = st.selectbox('Do you have access to mental health care options?', ['Yes', 'No', 'Not sure'])
 
-# Dane wejściowe
 input_data = {
     'Gender': gender,
     'Occupation': occupation,
@@ -55,20 +49,12 @@ input_data = {
 
 def preprocess_input(data):
     df = pd.DataFrame([data])
-
-    # Zamiana odpowiedzi Yes/No na 1/0 dla kolumn binarnych
     binary_columns = ['self_employed', 'family_history', 'Coping_Struggles']
     df[binary_columns] = df[binary_columns].replace({'Yes': 1, 'No': 0})
-
-    # Kolumny, które muszą być zamienione na zmienne kategoryczne (dummies)
     dummies_columns = ['Gender', 'Occupation', 'Days_Indoors', 'Growing_Stress', 
                        'Changes_Habits', 'Mental_Health_History', 'Mood_Swings', 
                        'Work_Interest', 'Social_Weakness', 'mental_health_interview', 'care_options']
-
-    # Konwersja zmiennych kategorycznych na dummies
     df = pd.get_dummies(df, columns=dummies_columns)
-
-    # Lista kolumn, które były użyte podczas trenowania modelu
     expected_columns = ['self_employed', 'family_history', 'Coping_Struggles',
                         'Days_Indoors_1-14 days', 'Days_Indoors_15-30 days',
                         'Days_Indoors_31-60 days', 'Days_Indoors_Go out Every day',
@@ -83,33 +69,22 @@ def preprocess_input(data):
                         'Social_Weakness_No', 'Social_Weakness_Yes', 'mental_health_interview_Maybe',
                         'mental_health_interview_No', 'mental_health_interview_Yes', 'care_options_No',
                         'care_options_Not sure', 'care_options_Yes']
-
-    # Dodanie brakujących kolumn z wartością 0
     for col in expected_columns:
         if col not in df.columns:
             df[col] = 0
-
-    # Upewnienie się, że kolumny są w odpowiedniej kolejności
     df = df[expected_columns]
-
-    # Konwersja danych na float32, aby były kompatybilne z modelem TensorFlow
     return df.values.astype(np.float32)
 
 
-    
-# Obsługa przycisku Predict
 if st.button('Predict'):
     preprocessed_data = preprocess_input(input_data)
-    
-    # Wyświetl rozmiar przetworzonych danych dla diagnostyki
     st.write(f"Shape of preprocessed data: {preprocessed_data.shape}")
-    
     if preprocessed_data is not None:
         try:
             prediction = predict_psy_health(preprocessed_data)
 
             if prediction[0][0] > 0.5:
-                st.error('Warning! There is a possible risk of mental illness.')
+                st.success('Warning! There is a possible risk of mental illness.')
             else:
                 st.success('No risk of mental illness detected.')
         except ValueError as e:
