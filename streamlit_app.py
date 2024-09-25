@@ -5,29 +5,27 @@ from tensorflow.keras.models import load_model
 
 model = load_model('NN_via_carpatia.h5')
 
-
 def predict_psy_health(data):
     prediction = model.predict(data)
     return prediction
 
-st.title('Mental Health Prediction App')
+st.title('🧠 Mental Health Prediction App')
 
-
-gender = st.selectbox('Select your gender:', ['Male', 'Female'])
-occupation = st.selectbox('What is your current occupation?', ['Student', 'Business', 'Housewife', 'Others', 'Corporate'])
-self_employed = st.selectbox('Are you self-employed?', ['Yes', 'No'])
-family_history = st.selectbox('Do you have a family history of mental illness?', ['Yes', 'No'])
-treatment = st.selectbox('Are you currently receiving treatment for mental health?', ['Yes', 'No'])
-days_indoors = st.selectbox('How long have you been staying indoors', ['1-14 days', '15-30 days', '31-60 days', 'Every day', 'More than 2 months'])
-growing_stress = st.selectbox('Have your stress levels been increasing recently?', ['Yes', 'No', 'Maybe'])
-changes_habits = st.selectbox('Have you noticed any changes in your habits?', ['Yes', 'No', 'Maybe'])
-mental_health_history = st.selectbox('Do you have a history of mental health issues?', ['Yes', 'No', 'Maybe'])
-mood_swings = st.selectbox('How frequently do you experience mood swings?', ['High', 'Low', 'Medium'])
-coping_struggles = st.selectbox('Do you struggle to cope with daily challenges?', ['Yes', 'No'])
-work_interest = st.selectbox('Are you interested in your work or daily activities?', ['Yes', 'No', 'Maybe'])
-social_weakness = st.selectbox('Do you feel socially weak or disconnected from others?', ['Yes', 'No', 'Maybe'])
-mental_health_interview = st.selectbox('Have you ever attended a mental health assessment or interview?', ['Yes', 'No', 'Maybe'])
-care_options = st.selectbox('Do you have access to mental health care options if needed?', ['Yes', 'No', 'Not sure'])
+gender = st.selectbox('👤 Select your gender:', ['Male', 'Female'])
+occupation = st.selectbox('💼 What is your current occupation?', ['Student', 'Business', 'Housewife', 'Others', 'Corporate'])
+self_employed = st.selectbox('📈 Are you self-employed?', ['Yes', 'No'])
+family_history = st.selectbox('👪 Do you have a family history of mental illness?', ['Yes', 'No'])
+treatment = st.selectbox('💊 Are you currently receiving treatment for mental health?', ['Yes', 'No'])
+days_indoors = st.selectbox('🏠 How long have you been staying indoors?', ['1-14 days', '15-30 days', '31-60 days', 'Every day', 'More than 2 months'])
+growing_stress = st.selectbox('📈 Have your stress levels been increasing recently?', ['Yes', 'No', 'Maybe'])
+changes_habits = st.selectbox('🔄 Have you noticed any changes in your habits?', ['Yes', 'No', 'Maybe'])
+mental_health_history = st.selectbox('📋 Do you have a history of mental health issues?', ['Yes', 'No', 'Maybe'])
+mood_swings = st.selectbox('🌪 How frequently do you experience mood swings?', ['High', 'Low', 'Medium'])
+coping_struggles = st.selectbox('💪 Do you struggle to cope with daily challenges?', ['Yes', 'No'])
+work_interest = st.selectbox('⚙️ Are you interested in your work or daily activities?', ['Yes', 'No', 'Maybe'])
+social_weakness = st.selectbox('🫂 Do you feel socially weak or disconnected from others?', ['Yes', 'No', 'Maybe'])
+mental_health_interview = st.selectbox('🗣️ Have you ever attended a mental health assessment or interview?', ['Yes', 'No', 'Maybe'])
+care_options = st.selectbox('🏥 Do you have access to mental health care options if needed?', ['Yes', 'No', 'Not sure'])
 
 input_data = {
     'Gender': gender,
@@ -76,26 +74,23 @@ def preprocess_input(data):
     return df.values.astype(np.float32)
 
 
-if st.button('Predict'):
+if st.button('🔮 Predict'):
     preprocessed_data = preprocess_input(input_data)
-    #st.write(f"Shape of preprocessed data: {preprocessed_data.shape}")
     if preprocessed_data is not None:
         try:
             prediction = predict_psy_health(preprocessed_data)
 
             if prediction[0][0] > 0.5:
-                st.info('There is a possible risk of mental illness.')
+                st.info('⚠️ There is a possible risk of mental illness.')
             else:
-                st.info('No risk of mental illness detected.')
+                st.info('✅ No risk of mental illness detected.')
         except ValueError as e:
-            
             st.error(f"Error during prediction: {e}")
-            
-            
+
 st.info(
-        """
-        **Author:** *Mateusz Walo*  
-        **LinkedIn:** [My LinkedIn profile :)](https://www.linkedin.com/in/mateuszwalo/)  
-        **Data:** [Mental Health Dataset](https://www.kaggle.com/datasets/bhavikjikadara/mental-health-dataset)
-        """
-    )
+    """
+    **Author:** *Mateusz Walo*  
+    **LinkedIn:** [My LinkedIn profile :)](https://www.linkedin.com/in/mateuszwalo/)  
+    **Data:** [Mental Health Dataset](https://www.kaggle.com/datasets/bhavikjikadara/mental-health-dataset)
+    """
+)
