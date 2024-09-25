@@ -84,7 +84,7 @@ if st.button('Predict'):
             prediction = predict_psy_health(preprocessed_data)
 
             if prediction[0][0] > 0.5:
-                st.info('Warning! There is a possible risk of mental illness.')
+                st.info('There is a possible risk of mental illness.')
             else:
                 st.info('No risk of mental illness detected.')
         except ValueError as e:
