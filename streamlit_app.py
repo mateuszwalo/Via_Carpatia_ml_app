@@ -92,7 +92,6 @@ if st.button('Predict'):
 
 
 
-with st.expander("About App"):
     st.info(
         """
         **Author:** *Mateusz Walo*  
