@@ -53,40 +53,47 @@ input_data = {
     'care_options': care_options
 }
 
-# Funkcja do przetwarzania danych
 def preprocess_input(data):
     df = pd.DataFrame([data])
 
-    # Zamiana odpowiedzi Yes/No na 1/0
-    binary_columns = ['self_employed', 'family_history', 'treatment', 'Coping_Struggles']
+    # Zamiana odpowiedzi Yes/No na 1/0 dla kolumn binarnych
+    binary_columns = ['self_employed', 'family_history', 'Coping_Struggles']
     df[binary_columns] = df[binary_columns].replace({'Yes': 1, 'No': 0})
 
-    # Kolumny, które muszą być zamienione na zmienne kategoryczne
+    # Kolumny, które muszą być zamienione na zmienne kategoryczne (dummies)
     dummies_columns = ['Gender', 'Occupation', 'Days_Indoors', 'Growing_Stress', 
                        'Changes_Habits', 'Mental_Health_History', 'Mood_Swings', 
                        'Work_Interest', 'Social_Weakness', 'mental_health_interview', 'care_options']
 
-    # Konwersja kategorycznych zmiennych na dummies
-    df = pd.get_dummies(df, columns=dummies_columns, drop_first=True)
+    # Konwersja zmiennych kategorycznych na dummies
+    df = pd.get_dummies(df, columns=dummies_columns)
 
-    # Kolumny, które były w trakcie trenowania modelu
-    expected_columns = ['self_employed', 'family_history', 'treatment', 'Coping_Struggles', 
-                        'Gender_Male', 'Occupation_Others', 'Occupation_Corporate', 
-                        'Days_Indoors_15-30 days', 'Days_Indoors_31-60 days', 'Days_Indoors_More than 2 months', 
-                        'Growing_Stress_Yes', 'Growing_Stress_Maybe', 'Changes_Habits_Yes', 'Changes_Habits_Maybe', 
-                        'Mental_Health_History_Yes', 'Mental_Health_History_Maybe', 'Mood_Swings_Medium', 'Mood_Swings_Low', 
-                        'Work_Interest_Yes', 'Work_Interest_Maybe', 'Social_Weakness_Yes', 'Social_Weakness_Maybe', 
-                        'mental_health_interview_Yes', 'mental_health_interview_Maybe', 'care_options_Yes', 'care_options_Not sure']
+    # Lista kolumn, które były użyte podczas trenowania modelu
+    expected_columns = ['self_employed', 'family_history', 'Coping_Struggles',
+                        'Days_Indoors_1-14 days', 'Days_Indoors_15-30 days',
+                        'Days_Indoors_31-60 days', 'Days_Indoors_Go out Every day',
+                        'Days_Indoors_More than 2 months', 'Gender_Female', 'Gender_Male',
+                        'Occupation_Business', 'Occupation_Corporate', 'Occupation_Housewife',
+                        'Occupation_Others', 'Occupation_Student', 'Growing_Stress_Maybe',
+                        'Growing_Stress_No', 'Growing_Stress_Yes', 'Changes_Habits_Maybe',
+                        'Changes_Habits_No', 'Changes_Habits_Yes', 'Mental_Health_History_Maybe',
+                        'Mental_Health_History_No', 'Mental_Health_History_Yes', 'Mood_Swings_High',
+                        'Mood_Swings_Low', 'Mood_Swings_Medium', 'Work_Interest_Maybe',
+                        'Work_Interest_No', 'Work_Interest_Yes', 'Social_Weakness_Maybe',
+                        'Social_Weakness_No', 'Social_Weakness_Yes', 'mental_health_interview_Maybe',
+                        'mental_health_interview_No', 'mental_health_interview_Yes', 'care_options_No',
+                        'care_options_Not sure', 'care_options_Yes']
 
-    # Dodaj brakujące kolumny z domyślną wartością 0
+    # Dodanie brakujących kolumn z wartością 0
     for col in expected_columns:
         if col not in df.columns:
             df[col] = 0
 
-    # Upewnij się, że kolumny są w odpowiedniej kolejności
+    # Upewnienie się, że kolumny są w odpowiedniej kolejności
     df = df[expected_columns]
 
     return df.values
+
     
 # Obsługa przycisku Predict
 if st.button('Predict'):
