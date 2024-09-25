@@ -13,7 +13,7 @@ st.title('🧠 Mental Health Prediction App')
 
 gender = st.selectbox('👤 Select your gender:', ['Male', 'Female'])
 occupation = st.selectbox('💼 What is your current occupation?', ['Student', 'Business', 'Housewife', 'Others', 'Corporate'])
-self_employed = st.selectbox('📈 Are you self-employed?', ['Yes', 'No'])
+self_employed = st.selectbox(' 🖊️ Are you self-employed?', ['Yes', 'No'])
 family_history = st.selectbox('👪 Do you have a family history of mental illness?', ['Yes', 'No'])
 treatment = st.selectbox('💊 Are you currently receiving treatment for mental health?', ['Yes', 'No'])
 days_indoors = st.selectbox('🏠 How long have you been staying indoors?', ['1-14 days', '15-30 days', '31-60 days', 'Every day', 'More than 2 months'])
