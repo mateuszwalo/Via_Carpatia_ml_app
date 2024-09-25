@@ -69,7 +69,7 @@ def preprocess_input(data):
     # Konwersja kategorycznych zmiennych na dummies
     df = pd.get_dummies(df, columns=dummies_columns, drop_first=True)
 
-    # Jeśli brakuje kolumn (model wymaga wszystkich kolumn, które były przy trenowaniu), dodaj brakujące kolumny z zerami
+    # Kolumny, które były w trakcie trenowania modelu
     expected_columns = ['self_employed', 'family_history', 'treatment', 'Coping_Struggles', 
                         'Gender_Male', 'Occupation_Others', 'Occupation_Corporate', 
                         'Days_Indoors_15-30 days', 'Days_Indoors_31-60 days', 'Days_Indoors_More than 2 months', 
@@ -78,7 +78,7 @@ def preprocess_input(data):
                         'Work_Interest_Yes', 'Work_Interest_Maybe', 'Social_Weakness_Yes', 'Social_Weakness_Maybe', 
                         'mental_health_interview_Yes', 'mental_health_interview_Maybe', 'care_options_Yes', 'care_options_Not sure']
 
-    # Dodaj brakujące kolumny
+    # Dodaj brakujące kolumny z domyślną wartością 0
     for col in expected_columns:
         if col not in df.columns:
             df[col] = 0
@@ -87,7 +87,7 @@ def preprocess_input(data):
     df = df[expected_columns]
 
     return df.values
-
+    
 # Obsługa przycisku Predict
 if st.button('Predict'):
     preprocessed_data = preprocess_input(input_data)
