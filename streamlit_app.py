@@ -89,3 +89,14 @@ if st.button('Predict'):
                 st.info('No risk of mental illness detected.')
         except ValueError as e:
             st.error(f"Error during prediction: {e}")
+
+
+
+with st.expander("About App"):
+    st.info(
+        """
+        **Author:** *Mateusz Walo*  
+        **LinkedIn:** [My LinkedIn profile :)](https://www.linkedin.com/in/mateuszwalo/)  
+        **Data:** [Mental Health Dataset](https://www.kaggle.com/datasets/bhavikjikadara/mental-health-dataset)
+        """
+    )
