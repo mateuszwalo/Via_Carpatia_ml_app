@@ -13,21 +13,21 @@ def predict_psy_health(data):
 st.title('Mental Health Prediction App')
 
 
-gender = st.selectbox('What is your gender?', ['Male', 'Female'])
-occupation = st.selectbox('What is your occupation?', ['Student', 'Business', 'Housewife', 'Others', 'Corporate'])
+gender = st.selectbox('Select your gender:', ['Male', 'Female'])
+occupation = st.selectbox('What is your current occupation?', ['Student', 'Business', 'Housewife', 'Others', 'Corporate'])
 self_employed = st.selectbox('Are you self-employed?', ['Yes', 'No'])
 family_history = st.selectbox('Do you have a family history of mental illness?', ['Yes', 'No'])
-treatment = st.selectbox('Are you currently receiving mental health treatment?', ['Yes', 'No'])
-days_indoors = st.selectbox('How often do you stay indoors?', ['1-14 days', '15-30 days', '31-60 days', 'Go out Every day', 'More than 2 months'])
-growing_stress = st.selectbox('Are your stress levels increasing?', ['Yes', 'No', 'Maybe'])
-changes_habits = st.selectbox('Have you noticed changes in your habits?', ['Yes', 'No', 'Maybe'])
+treatment = st.selectbox('Are you currently receiving treatment for mental health?', ['Yes', 'No'])
+days_indoors = st.selectbox('How often do you stay indoors?', ['1-14 days', '15-30 days', '31-60 days', 'Every day', 'More than 2 months'])
+growing_stress = st.selectbox('Have your stress levels been increasing recently?', ['Yes', 'No', 'Maybe'])
+changes_habits = st.selectbox('Have you noticed any changes in your habits?', ['Yes', 'No', 'Maybe'])
 mental_health_history = st.selectbox('Do you have a history of mental health issues?', ['Yes', 'No', 'Maybe'])
-mood_swings = st.selectbox('Do you experience mood swings?', ['High', 'Low', 'Medium'])
-coping_struggles = st.selectbox('How well do you cope with daily challenges?', ['Yes', 'No'])
-work_interest = st.selectbox('How interested are you in your work?', ['Yes', 'No', 'Maybe'])
-social_weakness = st.selectbox('Do you feel socially weak or disconnected?', ['Yes', 'No', 'Maybe'])
-mental_health_interview = st.selectbox('Have you had a mental health interview?', ['Yes', 'No', 'Maybe'])
-care_options = st.selectbox('Do you have access to mental health care options?', ['Yes', 'No', 'Not sure'])
+mood_swings = st.selectbox('How frequently do you experience mood swings?', ['High', 'Low', 'Medium'])
+coping_struggles = st.selectbox('Do you struggle to cope with daily challenges?', ['Yes', 'No'])
+work_interest = st.selectbox('How interested are you in your work or daily activities?', ['Yes', 'No', 'Maybe'])
+social_weakness = st.selectbox('Do you feel socially weak or disconnected from others?', ['Yes', 'No', 'Maybe'])
+mental_health_interview = st.selectbox('Have you ever attended a mental health assessment or interview?', ['Yes', 'No', 'Maybe'])
+care_options = st.selectbox('Do you have access to mental health care options if needed?', ['Yes', 'No', 'Not sure'])
 
 input_data = {
     'Gender': gender,
