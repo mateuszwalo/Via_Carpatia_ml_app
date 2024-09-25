@@ -92,7 +92,7 @@ if st.button('Predict'):
             st.error(f"Error during prediction: {e}")
             
             
-    st.info(
+st.info(
         """
         **Author:** *Mateusz Walo*  
         **LinkedIn:** [My LinkedIn profile :)](https://www.linkedin.com/in/mateuszwalo/)  
