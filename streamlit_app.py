@@ -91,11 +91,17 @@ def preprocess_input(data):
 # Obsługa przycisku Predict
 if st.button('Predict'):
     preprocessed_data = preprocess_input(input_data)
-
+    
+    # Wyświetl rozmiar przetworzonych danych dla diagnostyki
+    st.write(f"Shape of preprocessed data: {preprocessed_data.shape}")
+    
     if preprocessed_data is not None:
-        prediction = predict_psy_health(preprocessed_data)
+        try:
+            prediction = predict_psy_health(preprocessed_data)
 
-        if prediction[0][0] > 0.5:
-            st.error('Warning! There is a possible risk of mental illness.')
-        else:
-            st.success('No risk of mental illness detected.')
+            if prediction[0][0] > 0.5:
+                st.error('Warning! There is a possible risk of mental illness.')
+            else:
+                st.success('No risk of mental illness detected.')
+        except ValueError as e:
+            st.error(f"Error during prediction: {e}")
