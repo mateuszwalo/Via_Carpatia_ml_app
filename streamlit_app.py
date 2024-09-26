@@ -10,7 +10,7 @@ def predict_psy_health(data):
     return prediction
 page_bg_img = """
 <style>
-[data-testid="stVerticalBlock"] {
+[data-testid="manage-app-button"] {
    
 }
 </style>
