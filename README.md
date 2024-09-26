@@ -26,12 +26,12 @@ Make sure you have the following installed:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/mental-health-prediction-app.git
+    git clone https://github.com/mateuszwalo/Via_Carpatia_ml_app.git
     ```
    
 2. Navigate into the project directory:
     ```bash
-    cd mental-health-prediction-app
+    cd Via_Carpatia_ml_app
     ```
 
 3. Install the required dependencies:
