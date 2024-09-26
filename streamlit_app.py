@@ -8,6 +8,18 @@ model = load_model('NN_via_carpatia.h5')
 def predict_psy_health(data):
     prediction = model.predict(data)
     return prediction
+page_bg_img = """
+<style>
+[data-testid="stVerticalBlock"] {
+    background-color: #000000; /* Czarny kolor tła */
+    color: #ffffff; /* Białe napisy */
+    background-color: purple; /* Czarny kolor tła */
+    color: white; /* Białe napisy */
+}
+</style>
+"""
+
+st.markdown(page_bg_img, unsafe_allow_html=True)
 
 st.title('🧠 Mental Health Prediction App')
 
