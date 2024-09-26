@@ -11,10 +11,7 @@ def predict_psy_health(data):
 page_bg_img = """
 <style>
 [data-testid="stVerticalBlock"] {
-    background-color: #000000; /* Czarny kolor tła */
-    color: #ffffff; /* Białe napisy */
-    background-color: purple; /* Czarny kolor tła */
-    color: white; /* Białe napisy */
+   
 }
 </style>
 """
