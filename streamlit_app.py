@@ -92,14 +92,16 @@ def preprocess_input(data):
 
 if st.button('🔮 Predict'):
     preprocessed_data = preprocess_input(input_data)
+    
     if preprocessed_data is not None:
         try:
             prediction = predict_psy_health(preprocessed_data)
+            probability = prediction[0][0] * 100  
 
             if prediction[0][0] > 0.5:
-                st.info('⚠️ There is a possible risk of mental illness.')
+                st.info(f'⚠️ **There is a possible risk of mental illness.** \n\n **Probability**: {probability:.2f}%')
             else:
-                st.info('✅ No risk of mental illness detected.')
+                st.info(f'✅ **No risk of mental illness detected.** \n\n **Probability**: {probability:.2f}%')
         except ValueError as e:
             st.error(f"Error during prediction: {e}")
 
