@@ -11,7 +11,17 @@ This application uses a machine learning model to assess the potential risk of m
 - **Probability Visualization**: The predicted probability is displayed visually through a bar chart.
 - **Customized Feedback**: Feedback messages are tailored based on the risk level, offering suggestions to users.
 
-## 🚀 How to Run the App
+  
+## 🌐 Try the App Online
+
+You can access the Mental Health Prediction App directly through the following link:
+
+[🧠 Try the Mental Health Prediction App here!](https://via-carpatia-ml-app.streamlit.app/)
+
+Simply open the link, input your data, and receive real-time predictions about your mental health risk.
+
+
+## 🚀 How to locally Run the App
 
 To run this Streamlit app locally, follow these steps:
 
