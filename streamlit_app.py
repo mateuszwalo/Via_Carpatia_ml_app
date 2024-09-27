@@ -15,6 +15,9 @@ page_bg_img = '''
 .stApp {
     background-image: url("https://raw.githubusercontent.com/mateuszwalo/Via_Carpatia_ml_app/master/77872474-d6a4-4dae-a707-ac6196822187.jpg");
     background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 </style>
 '''
