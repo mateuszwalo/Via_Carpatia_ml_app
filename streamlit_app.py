@@ -13,7 +13,7 @@ def predict_psy_health(data):
 page_bg_img = '''
 <style>
 .stApp {
-    background-image: url("https://raw.githubusercontent.com/mateuszwalo/Via_Carpatia_ml_app/master/73935a88-e3d1-42ce-8994-1fe5b286c80e.jpg");
+    background-image: url("https://raw.githubusercontent.com/mateuszwalo/Via_Carpatia_ml_app/master/77872474-d6a4-4dae-a707-ac6196822187.jpg");
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
