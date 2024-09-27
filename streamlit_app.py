@@ -25,7 +25,7 @@ page_bg_img = '''
 # Wstawienie CSS do aplikacji
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
-st.title('🧠 Mental Health Prediction App ')
+st.title('🧠 Mental Health Prediction App. ')
 
 gender = st.selectbox('👤 Select your gender:', ['Male', 'Female'])
 occupation = st.selectbox('💼 What is your current occupation?', ['Student', 'Business', 'Housewife', 'Others', 'Corporate'])
