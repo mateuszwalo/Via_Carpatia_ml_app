@@ -107,7 +107,7 @@ if st.button('🔮 Predict'):
 st.info(
     """
     **Author:** *Mateusz Walo*  
-    **Graphic desgin:** *Karolina Gajowiak*  
+    **Graphic design:** *Karolina Gajowiak*  
     **LinkedIn:** [My LinkedIn profile :)](https://www.linkedin.com/in/mateuszwalo/)   
     **Data:** [Mental Health Dataset](https://www.kaggle.com/datasets/bhavikjikadara/mental-health-dataset)  
     """
