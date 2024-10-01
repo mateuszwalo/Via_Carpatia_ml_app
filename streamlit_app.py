@@ -6,7 +6,7 @@ import pickle
 
 model = load_model('NN_via_carpatia.h5')
 
-pickle_in_1=open("transformer.pkl","wb")
+pickle_in_1=open("transformer.pkl","rb")
 scaler=pickle.load(pickle_in_1)
 
 def predict_psy_health(data):
