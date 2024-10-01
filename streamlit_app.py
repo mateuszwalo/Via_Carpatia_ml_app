@@ -89,8 +89,8 @@ def preprocess_input(data):
     for col in expected_columns:
         if col not in df.columns:
             df[col] = 0
-    df = df[expected_columns]
-    df = scaler.transform(df)
+    #df = df[expected_columns]
+    #df = scaler.transform(df)
     return df.values.astype(np.float32)
 
 
