@@ -5,4 +5,7 @@ matplotlib
 seaborn
 scikit-learn
 plotly
+scipy
+imblearn
+xgboost
 tensorflow
