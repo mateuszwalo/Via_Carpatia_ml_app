@@ -2,8 +2,12 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from tensorflow.keras.models import load_model
+import pickle
 
 model = load_model('NN_via_carpatia.h5')
+
+pickle_in_1=open("transformer.pkl","wb")
+scaler=pickle.load(pickle_in_1)
 
 def predict_psy_health(data):
     prediction = model.predict(data)
@@ -86,6 +90,7 @@ def preprocess_input(data):
         if col not in df.columns:
             df[col] = 0
     df = df[expected_columns]
+    df = scaler.transform(df)
     return df.values.astype(np.float32)
 
 
