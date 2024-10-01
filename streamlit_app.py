@@ -2,8 +2,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from tensorflow.keras.models import load_model
-import pickle
-import os
 
 model = load_model('NN_via_carpatia.h5')
 
@@ -87,12 +85,13 @@ def preprocess_input(data):
     for col in expected_columns:
         if col not in df.columns:
             df[col] = 0
+    df = df[expected_columns]
     return df.values.astype(np.float32)
 
 
 if st.button('🔮 Predict'):
     preprocessed_data = preprocess_input(input_data)
-    
+
     if preprocessed_data is not None:
         try:
             prediction = predict_psy_health(preprocessed_data)
@@ -108,6 +107,7 @@ if st.button('🔮 Predict'):
 st.info(
     """
     **Author:** *Mateusz Walo*  
+    **Graphic desgin:** *Karolina Gajowiak*  
     **Graphic design:** *Karolina Gajowiak*  
     **LinkedIn:** [My LinkedIn profile :)](https://www.linkedin.com/in/mateuszwalo/)   
     **Data:** [Mental Health Dataset](https://www.kaggle.com/datasets/bhavikjikadara/mental-health-dataset)  
