@@ -7,20 +7,6 @@ import os
 
 model = load_model('NN_via_carpatia.h5')
 
-file_path = 'transformer.pkl'
-
-if os.path.exists(file_path):
-    file_size = os.path.getsize(file_path)
-    if file_size > 0:
-        with open(file_path, 'rb') as pickle_in_1:
-            scaler = pickle.load(pickle_in_1)
-        print("Plik został poprawnie załadowany.")
-    else:
-        print(f"Plik {file_path} jest pusty.")
-else:
-    print(f"Plik {file_path} nie istnieje.")
-
-
 def predict_psy_health(data):
     prediction = model.predict(data)
     return prediction
@@ -101,8 +87,6 @@ def preprocess_input(data):
     for col in expected_columns:
         if col not in df.columns:
             df[col] = 0
-    #df = df[expected_columns]
-    #df = scaler.transform(df)
     return df.values.astype(np.float32)
 
 
