@@ -24,7 +24,7 @@ page_bg_img = '''
 # Wstawienie CSS do aplikacji
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
-st.title('🧠 Mental Health Prediction App 🧠')
+st.title('🧠 Mental Health Prediction App')
 
 gender = st.selectbox('👤 Select your gender:', ['Male', 'Female'])
 occupation = st.selectbox('💼 What is your current occupation?', ['Student', 'Business', 'Housewife', 'Others', 'Corporate'])
@@ -107,8 +107,8 @@ if st.button('🔮 Predict'):
 st.info(
     """
     **Author:** *Mateusz Walo*  
-    **Graphic design:** *Karolina Gajowiak* 
-    **Support:** *Magdalena Piłat-Rożek, Diana Morzhak*
+    **Graphic design:** *Karolina Gajowiak*  
+    **Support:** *Magdalena Piłat-Rożek, Diana Morzhak*  
     **LinkedIn:** [My LinkedIn profile :)](https://www.linkedin.com/in/mateuszwalo/)   
     **Data:** [Mental Health Dataset](https://www.kaggle.com/datasets/bhavikjikadara/mental-health-dataset)  
     """
